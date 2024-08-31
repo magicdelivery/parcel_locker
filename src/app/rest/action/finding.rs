@@ -10,7 +10,7 @@ pub async fn find_parcel_lockers_by_distance(
 ) -> Result<impl Reply, Rejection> {
     let longitude = match params.get("longitude") {
         Some(longitude) => match longitude.parse::<f64>() {
-            Ok(longitude) if longitude >= -180.0 && longitude <= 180.0 => longitude,
+            Ok(longitude) if (-180.0..=180.0).contains(&longitude) => longitude,
             Err(_) => {
                 return Err(warp::reject::custom(BadRequestError::ParameterNotNumeric(
                     "longitude".to_string(),
@@ -30,7 +30,7 @@ pub async fn find_parcel_lockers_by_distance(
     };
     let latitude = match params.get("latitude") {
         Some(latitude) => match latitude.parse::<f64>() {
-            Ok(latitude) if latitude >= -90.0 && latitude <= 90.0 => latitude,
+            Ok(latitude) if (-90.0..=90.0).contains(&latitude) => latitude,
             Err(_) => {
                 return Err(warp::reject::custom(BadRequestError::ParameterNotNumeric(
                     "latitude".to_string(),

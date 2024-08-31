@@ -17,6 +17,9 @@ pub async fn load_parcel_locker_by_id(
         Err(LoadError::StorageError(err)) => {
             Err(warp::reject::custom(app_errors::StorageError(err)))
         }
+        // Err(LoadError::NumericOverflow(err)) => {
+        //     Err(warp::reject::custom(app_errors::BadRequestError::InvalidValue(err)))
+        // }
     }
 }
 
@@ -25,7 +28,7 @@ pub async fn load_parcel_lockers_paginated(
     params: HashMap<String, String>,
     loader: impl Loading + Debug,
 ) -> Result<impl Reply, Rejection> {
-    let pagination_params = match param_extractor::extract_pagination(params) {
+    let pagination_params = match param_extractor::extract_pagination(&params) {
         Ok(pagination_params) => pagination_params,
         Err(param_extractor::PaginationParamError::NotPositiveIntError((key, _)))
             if key == param_extractor::PAGE_PARAM =>
@@ -50,5 +53,8 @@ pub async fn load_parcel_lockers_paginated(
         Err(LoadError::StorageError(err)) => {
             Err(warp::reject::custom(app_errors::StorageError(err)))
         }
+        // Err(LoadError::NumericOverflow(err)) => {
+        //     Err(warp::reject::custom(app_errors::BadRequestError::InvalidValue(err)))
+        // }
     }
 }

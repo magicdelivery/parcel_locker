@@ -22,11 +22,6 @@ jobs:
 
       - uses: Swatinem/rust-cache@v2
 
-#      - name: setup toolchain
-#        uses: hecrj/setup-rust-action@v1
-#        with:
-#          rust-version: stable
-
       - name: cargo test
         run: cargo test --all-features
 
