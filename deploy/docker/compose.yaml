@@ -5,6 +5,7 @@ services:
     build: 
       context: ../..
       dockerfile: deploy/docker/app/Dockerfile
+    container_name: md-pl-app
     depends_on:
       - pl-redis-storage
     env_file:
@@ -24,8 +25,10 @@ services:
     ports:
       - "8081:8081/tcp"
     read_only: true
+    restart: unless-stopped
 
   pl-redis-storage:
+    container_name: md-pl-redis-storage
     entrypoint: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     image: redis
     labels:
@@ -33,11 +36,13 @@ services:
       - "app-service=md-pl-redis-storage"
     networks:
       - pl-redis
+    restart: unless-stopped
     volumes:
       - pl-redis-data:/data
       - ./redis-storage/redis.conf:/usr/local/etc/redis/redis.conf
 
   pl-redis-populator:
+    container_name: md-pl-redis-populator
     depends_on:
       - pl-redis-storage
     entrypoint: ["/redis-populator/populate.sh", "/redis-populator/data.txt"]
