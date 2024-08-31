@@ -16,10 +16,9 @@ pub async fn load_parcel_locker_by_id(
         Err(LoadError::NotFound) => Ok(warp::reply::json(&())),
         Err(LoadError::StorageError(err)) => {
             Err(warp::reject::custom(app_errors::StorageError(err)))
-        }
-        // Err(LoadError::NumericOverflow(err)) => {
-        //     Err(warp::reject::custom(app_errors::BadRequestError::InvalidValue(err)))
-        // }
+        } // Err(LoadError::NumericOverflow(err)) => {
+          //     Err(warp::reject::custom(app_errors::BadRequestError::InvalidValue(err)))
+          // }
     }
 }
 
@@ -52,9 +51,8 @@ pub async fn load_parcel_lockers_paginated(
         Err(LoadError::NotFound) => Ok(warp::reply::json(&())),
         Err(LoadError::StorageError(err)) => {
             Err(warp::reject::custom(app_errors::StorageError(err)))
-        }
-        // Err(LoadError::NumericOverflow(err)) => {
-        //     Err(warp::reject::custom(app_errors::BadRequestError::InvalidValue(err)))
-        // }
+        } // Err(LoadError::NumericOverflow(err)) => {
+          //     Err(warp::reject::custom(app_errors::BadRequestError::InvalidValue(err)))
+          // }
     }
 }
