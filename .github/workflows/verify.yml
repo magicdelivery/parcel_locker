@@ -1,15 +1,15 @@
 name: verify.yml
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
     paths:
       - 'src/**'
   pull_request:
-    branches:
-      - main
+    branches: [ main ]
     paths:
       - 'src/**'
+  workflow_dispatch:
+
 jobs:
   build_and_test:
     name: Rust project
@@ -21,11 +21,6 @@ jobs:
         run: rustup toolchain install stable --profile minimal
 
       - uses: Swatinem/rust-cache@v2
-
-#      - name: setup toolchain
-#        uses: hecrj/setup-rust-action@v1
-#        with:
-#          rust-version: stable
 
       - name: cargo test
         run: cargo test --all-features

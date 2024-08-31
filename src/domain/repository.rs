@@ -4,6 +4,7 @@ use mockall::automock;
 pub enum LoadError {
     NotFound,
     StorageError(redis::RedisError),
+    // NumericOverflow(String),
 }
 
 #[automock]

@@ -18,12 +18,11 @@ pub enum PaginationParamError {
 }
 
 pub fn extract_pagination(
-    params: HashMap<String, String>,
+    params: &HashMap<String, String>,
 ) -> Result<PaginationParams, PaginationParamError> {
     let page = match params.get(PAGE_PARAM) {
         Some(page_param) => match page_param.parse::<usize>() {
-            // Ok(page) if page > 0 => page,
-            Ok(page) if page == 0 => PAGE_DEF,
+            Ok(0) => PAGE_DEF,
             Ok(page) => page,
             Err(err) => {
                 return Err(PaginationParamError::NotPositiveIntError((
@@ -38,7 +37,7 @@ pub fn extract_pagination(
         Some(per_page_param) => match per_page_param.parse::<usize>() {
             // Ok(per_page) if per_page > 0 => per_page,
             // Ok(per_page) if per_page <= 0 => return Err(PaginationParamError::NotPositiveNumber("per_page".to_string())),
-            Ok(per_page) if per_page == 0 => PER_PAGE_DEF,
+            Ok(0) => PER_PAGE_DEF,
             Ok(per_page) => per_page,
             Err(err) => {
                 return Err(PaginationParamError::NotPositiveIntError((
@@ -59,7 +58,7 @@ mod param_extractor_test {
     #[test]
     fn extract_pagination_default_values() {
         let params = HashMap::new();
-        let result = extract_pagination(params);
+        let result = extract_pagination(&params);
         assert_eq!(
             result,
             Ok(PaginationParams {
@@ -74,7 +73,7 @@ mod param_extractor_test {
         let mut params = HashMap::new();
         params.insert(PAGE_PARAM.to_string(), "0".to_string());
         params.insert(PER_PAGE_PARAM.to_string(), "0".to_string());
-        let result = extract_pagination(params);
+        let result = extract_pagination(&params);
         assert_eq!(
             result,
             Ok(PaginationParams {
@@ -89,7 +88,7 @@ mod param_extractor_test {
         let mut params = HashMap::new();
         params.insert(PAGE_PARAM.to_string(), "2".to_string());
         params.insert(PER_PAGE_PARAM.to_string(), "5".to_string());
-        let result = extract_pagination(params);
+        let result = extract_pagination(&params);
         assert_eq!(
             result,
             Ok(PaginationParams {
@@ -103,7 +102,7 @@ mod param_extractor_test {
     fn extract_pagination_invalid_page() {
         let mut params = HashMap::new();
         params.insert(PAGE_PARAM.to_string(), "-1".to_string());
-        let result = extract_pagination(params);
+        let result = extract_pagination(&params);
         assert!(
             matches!(result, Err(PaginationParamError::NotPositiveIntError((key, _))) if key == PAGE_PARAM)
         );
@@ -113,7 +112,7 @@ mod param_extractor_test {
     fn extract_pagination_invalid_per_page() {
         let mut params = HashMap::new();
         params.insert(PER_PAGE_PARAM.to_string(), "-20".to_string());
-        let result = extract_pagination(params);
+        let result = extract_pagination(&params);
         assert!(
             matches!(result, Err(PaginationParamError::NotPositiveIntError((key, _))) if key == PER_PAGE_PARAM)
         );
