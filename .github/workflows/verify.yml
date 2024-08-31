@@ -10,6 +10,9 @@ on:
       - 'src/**'
   workflow_dispatch:
 
+env:
+  CARGO_TERM_COLOR: always
+
 jobs:
   build_and_test:
     name: Rust project
