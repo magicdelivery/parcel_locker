@@ -3,7 +3,6 @@ use crate::infra::storage::common::{connect, make_parcel_locker_key};
 use crate::redis::Commands;
 use redis::{Connection, RedisError};
 
-//
 pub fn save_parcel_locker(parcel_locker: &ParcelLocker) -> Result<bool, RedisError> {
     let mut con = connect();
     let parcel_locker_clone = parcel_locker.clone();
