@@ -18,6 +18,8 @@ RUN cargo build --release --bin parcel_locker
 # We do not need the Rust toolchain to run the binary!
 FROM alpine:3.20 AS runtime
 WORKDIR /app
-RUN apk add --no-cache libgcc curl
+RUN apk add --no-cache libgcc curl \
+    && adduser -D appuser
+USER appuser
 COPY --from=builder /app/target/release/parcel_locker /app/parcel_locker_service
 ENTRYPOINT ["/app/parcel_locker_service"]
