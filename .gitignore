@@ -6,3 +6,4 @@ Cargo.lock
 *.pdb
 .idea/
 **/mystuff/
+.env

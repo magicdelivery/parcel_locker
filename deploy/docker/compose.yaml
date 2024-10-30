@@ -45,7 +45,7 @@ services:
     container_name: md-pl-redis-populator
     depends_on:
       - pl-redis-storage
-    entrypoint: ["/redis-populator/populate.sh", "/redis-populator/data.txt"]
+    entrypoint: ["bash", "/redis-populator/populate.sh", "/redis-populator/data.txt"]
     env_file:
       - ./.env
     image: redis

@@ -10,6 +10,8 @@ Before setting up the project, you need to have a Docker infrastructure installe
 First, start the 'Parcel Locker' microservice.
 
 ```sh
+mkdir magicdelivery && cd magicdelivery
+git clone https://github.com/magicdelivery/parcel_locker.git
 cd parcel_locker
 make up
 ```
@@ -26,3 +28,10 @@ There are some unit tests for the application logic, as well as E2E testing of t
 
 The GitHub verification workflow automatically runs unit tests, checks code formatting, and uses Clippy for linting to ensure code quality.  
 
+## Contribution
+
+Since this is a learning project focused on microservices with Rust, I would be incredibly grateful for any advice or ideas for improvement!
+
+## Licence
+
+MIT
