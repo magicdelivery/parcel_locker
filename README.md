@@ -26,8 +26,6 @@ Data storage is managed by a [Redis](https://redis.io/) server.
 
 There are some unit tests for the application logic, as well as E2E testing of the API using the hurl utility.
 
-The GitHub verification workflow automatically runs unit tests, checks code formatting, and uses Clippy for linting to ensure code quality.  
-
 ## GitHub Actions
 
 The repository includes GitHub Actions pipeline that installs the stable Rust toolchain, caches dependencies, runs unit tests, checks formatting, and enforces linting rules.
