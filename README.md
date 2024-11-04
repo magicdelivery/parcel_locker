@@ -28,6 +28,10 @@ There are some unit tests for the application logic, as well as E2E testing of t
 
 The GitHub verification workflow automatically runs unit tests, checks code formatting, and uses Clippy for linting to ensure code quality.  
 
+## GitHub Actions
+
+The repository includes GitHub Actions pipeline that installs the stable Rust toolchain, caches dependencies, runs unit tests, checks formatting, and enforces linting rules.
+
 ## Contribution
 
 Since this is a learning project focused on microservices with Rust, I would be incredibly grateful for any advice or ideas for improvement!
