@@ -1,13 +1,13 @@
-name: md
+name: md-pl
 
 services:
-  pl-app:
+  app:
     build: 
       context: ../..
       dockerfile: deploy/docker/app/Dockerfile
     container_name: md-pl-app
     depends_on:
-      - pl-redis-storage
+      - redis-storage
     env_file:
       - ./.env
     healthcheck:
@@ -20,14 +20,14 @@ services:
       - "app-identity=magic-delivery"
       - "app-service=md-pl-app"
     networks:
-      - pl-public
-      - pl-redis
+      - public
+      - redis
     ports:
       - "8081:8081/tcp"
     read_only: true
     restart: unless-stopped
 
-  pl-redis-storage:
+  redis-storage:
     container_name: md-pl-redis-storage
     entrypoint: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     image: redis
@@ -35,16 +35,16 @@ services:
       - "app-identity=magic-delivery"
       - "app-service=md-pl-redis-storage"
     networks:
-      - pl-redis
+      - redis
     restart: unless-stopped
     volumes:
-      - pl-redis-data:/data
+      - redis-data:/data
       - ./redis-storage/redis.conf:/usr/local/etc/redis/redis.conf
 
-  pl-redis-populator:
+  redis-populator:
     container_name: md-pl-redis-populator
     depends_on:
-      - pl-redis-storage
+      - redis-storage
     entrypoint: ["bash", "/redis-populator/populate.sh", "/redis-populator/data.txt"]
     env_file:
       - ./.env
@@ -53,39 +53,39 @@ services:
       - "app-identity=magic-delivery"
       - "app-service=md-pl-redis-populator"
     networks:
-      - pl-redis
+      - redis
     volumes:
       - ./redis-populator:/redis-populator
 
-#  pl-redis-backup:
+#  redis-backup:
 #    image: bash
 #    entrypoint: ["/snapshot-backup.sh"]
 #    depends_on:
-#      - pl-redis-storage
+#      - redis-storage
 #    environment:
 #      - BACKUP_PERIOD=60
 #    volumes:
 #      - ./redis-backup/snapshot-backup.sh:/snapshot-backup.sh
-#      - pl-redis-data:/data:ro
-#      - pl-backup:/backup
+#      - redis-data:/data:ro
+#      - backup:/backup
 #
 volumes:
-  pl-redis-data:
+  redis-data:
     labels:
       - "app-identity=magic-delivery"
       - "app-volume=md-pl-redis-data"
-#  pl-backup:
+#  backup:
 #    labels:
 #      - "app-identity=magic-delivery"
 #      - "app-volume=pl-backup"
 
 networks:
-  pl-public:
+  public:
     name: md-pl-public
     labels:
       - "app-identity=magic-delivery"
       - "app-network=md-pl-public"
-  pl-redis:
+  redis:
     name: md-pl-redis
     labels:
       - "app-identity=magic-delivery"
